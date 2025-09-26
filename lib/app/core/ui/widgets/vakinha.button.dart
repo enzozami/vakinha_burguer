@@ -22,7 +22,7 @@ class VakinhaButton extends StatelessWidget {
       width: width,
       height: height,
       child: ElevatedButton(
-        onPressed: () => onPressed,
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           shape: StadiumBorder(),
           backgroundColor: color,
