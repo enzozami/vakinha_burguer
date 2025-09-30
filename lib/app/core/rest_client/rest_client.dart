@@ -4,10 +4,7 @@ class RestClient extends GetConnect {
   final _backendBaseUrl = 'http://10.24.24.247:8080';
 
   RestClient() {
-    httpClient
-      ..baseUrl = _backendBaseUrl
-      ..timeout = Duration(seconds: 10)
-      ..defaultContentType = 'application/json';
+    httpClient.baseUrl = _backendBaseUrl;
   }
 }
 
