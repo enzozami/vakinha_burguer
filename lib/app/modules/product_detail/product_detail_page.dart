@@ -31,7 +31,7 @@ class ProductDetailPage extends GetView<ProductDetailController> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(
-                            'https://blog.letskuk.com.br/wp-content/uploads/2022/10/lanches-gourmet.jpg'),
+                            'http://10.24.24.247:8080/images${controller.product.image}'),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -42,7 +42,7 @@ class ProductDetailPage extends GetView<ProductDetailController> {
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text(
-                      'NOME',
+                      controller.product.name,
                       style: context.textTheme.headlineLarge!.copyWith(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -52,31 +52,34 @@ class ProductDetailPage extends GetView<ProductDetailController> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: Text(
-                      'NOME',
+                      controller.product.description,
                       style: context.textTheme.bodyMedium!,
                     ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  PlusMinusBox(
-                    label: 'XTUDO',
-                    minusCallback: () {},
-                    plusCallback: () {},
-                    price: 6,
-                    quantity: 1,
-                  ),
+                  Obx(() {
+                    return PlusMinusBox(
+                      minusCallback: controller.removeProduct,
+                      plusCallback: controller.addProduct,
+                      price: controller.product.price,
+                      quantity: controller.quantity,
+                    );
+                  }),
                   const Divider(),
-                  ListTile(
-                    title: Text(
-                      'Total',
-                      style: VakinhaUi.textBold,
-                    ),
-                    trailing: Text(
-                      FormatterHelper.formatCurrency(200),
-                      style: VakinhaUi.textBold,
-                    ),
-                  ),
+                  Obx(() {
+                    return ListTile(
+                      title: Text(
+                        'Total',
+                        style: VakinhaUi.textBold,
+                      ),
+                      trailing: Text(
+                        FormatterHelper.formatCurrency(controller.totalPrice),
+                        style: VakinhaUi.textBold,
+                      ),
+                    );
+                  }),
                   const SizedBox(
                     height: 20,
                   ),
@@ -84,8 +87,8 @@ class ProductDetailPage extends GetView<ProductDetailController> {
                     child: SizedBox(
                       width: context.widthTransformer(reducedBy: 10),
                       child: VakinhaButton(
-                        onPressed: () {},
-                        label: 'ADICIONAR',
+                        onPressed: controller.addProductInShoppingCard,
+                        label: controller.alreadyAdded ? 'ATUALIZAR' : 'ADICIONAR',
                       ),
                     ),
                   )
