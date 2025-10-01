@@ -61,6 +61,7 @@ class _LoginPageState extends VakinhaState<LoginPage, LoginController> {
                         controller: _emailEC,
                         validator: Validatorless.multiple([
                           Validatorless.required('E-mail obrigatório'),
+                          Validatorless.email('E-mail inválido'),
                         ]),
                       ),
                       const SizedBox(
@@ -69,11 +70,11 @@ class _LoginPageState extends VakinhaState<LoginPage, LoginController> {
                       VakinhaTextformfield(
                         label: 'Senha',
                         controller: _passwordEC,
-                        validator: Validatorless.multiple(
-                          [
-                            Validatorless.min(6, 'Minimo 6'),
-                          ],
-                        ),
+                        obscureText: true,
+                        validator: Validatorless.multiple([
+                          Validatorless.required('Senha obrigatória'),
+                          Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
+                        ]),
                       ),
                       const SizedBox(
                         height: 30,
