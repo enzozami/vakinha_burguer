@@ -1,5 +1,6 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:vakinha_burguer_mobile/app/modules/order/finished/finished_page.dart';
+import 'package:vakinha_burguer_mobile/app/modules/order/pix/pix_page.dart';
 
 class OrdersRouters {
   OrdersRouters._();
@@ -8,6 +9,10 @@ class OrdersRouters {
     GetPage(
       name: '/orders/finished',
       page: () => FinishedPage(),
+    ),
+    GetPage(
+      name: '/order/pix',
+      page: () => PixPage(),
     ),
   ];
 }
