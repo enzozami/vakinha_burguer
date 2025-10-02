@@ -14,7 +14,7 @@ class ProductsRepositoryImpl implements ProductsRepository {
 
   @override
   Future<List<ProductModel>> findAll() async {
-    final result = await _restClient.get('/products/');
+    final result = await _restClient.get('/products');
 
     if (result.hasError) {
       log(

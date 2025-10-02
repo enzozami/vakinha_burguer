@@ -7,116 +7,148 @@ import 'package:validatorless/validatorless.dart';
 import './shopping_card_controller.dart';
 
 class ShoppingCardPage extends GetView<ShoppingCardController> {
-  const ShoppingCardPage({super.key});
+  final _formKey = GlobalKey<FormState>();
+
+  ShoppingCardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          return ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
-              minWidth: constraints.maxWidth,
-            ),
-            child: IntrinsicHeight(
-              child: Form(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 15.0),
-                            child: Text(
-                              'Carrinho',
-                              style: context.textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: context.theme.primaryColorDark,
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.delete_outline,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Obx(() {
-                      return Column(
-                        children: controller.products
-                            .map(
-                              (p) => Container(
-                                margin: EdgeInsets.all(10),
-                                child: PlusMinusBox(
-                                  label: p.product.name,
-                                  calculateTotal: true,
-                                  quantity: p.quantity,
-                                  elevated: true,
-                                  backgroundColor: Colors.white,
-                                  plusCallback: () {
-                                    controller.addQuantityInProduct(p);
-                                  },
-                                  minusCallback: () {
-                                    controller.subtractQuantityInProduct(p);
-                                  },
-                                  price: p.product.price,
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      );
-                    }),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+                minWidth: constraints.maxWidth,
+              ),
+              child: IntrinsicHeight(
+                child: Form(
+                  key: _formKey,
+                  child: Visibility(
+                    visible: controller.products.isNotEmpty,
+                    replacement: Padding(
                       padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Total do pedido',
-                            style: context.textTheme.bodyMedium?.copyWith(
+                            'Carrinho',
+                            style: context.textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.bold,
+                              color: context.theme.primaryColorDark,
                             ),
                           ),
-                          Obx(() {
-                            return Text(
-                              FormatterHelper.formatCurrency(controller.totalValue),
-                              style: context.textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            );
-                          }),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text('Nenhum item adicionado no carrinho!')
                         ],
                       ),
                     ),
-                    Divider(),
-                    _AddressField(),
-                    Divider(),
-                    _CpfField(),
-                    Divider(),
-                    Spacer(),
-                    Center(
-                      child: SizedBox(
-                        width: context.widthTransformer(reducedBy: 10),
-                        child: VakinhaButton(
-                          onPressed: () {},
-                          label: 'FINALIZAR',
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                                child: Text(
+                                  'Carrinho',
+                                  style: context.textTheme.headlineMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: context.theme.primaryColorDark,
+                                  ),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: controller.clear,
+                                icon: Icon(
+                                  Icons.delete_outline,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                        Obx(() {
+                          return Column(
+                            children: controller.products
+                                .map(
+                                  (p) => Container(
+                                    margin: EdgeInsets.all(10),
+                                    child: PlusMinusBox(
+                                      label: p.product.name,
+                                      calculateTotal: true,
+                                      quantity: p.quantity,
+                                      elevated: true,
+                                      backgroundColor: Colors.white,
+                                      plusCallback: () {
+                                        controller.addQuantityInProduct(p);
+                                      },
+                                      minusCallback: () {
+                                        controller.subtractQuantityInProduct(p);
+                                      },
+                                      price: p.product.price,
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          );
+                        }),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Total do pedido',
+                                style: context.textTheme.bodyMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Obx(() {
+                                return Text(
+                                  FormatterHelper.formatCurrency(controller.totalValue),
+                                  style: context.textTheme.bodyLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              }),
+                            ],
+                          ),
+                        ),
+                        Divider(),
+                        _AddressField(),
+                        Divider(),
+                        _CpfField(),
+                        Divider(),
+                        Spacer(),
+                        Center(
+                          child: SizedBox(
+                            width: context.widthTransformer(reducedBy: 10),
+                            child: VakinhaButton(
+                              onPressed: () {
+                                final formValid = _formKey.currentState?.validate() ?? false;
+                                if (formValid) {
+                                  controller.createOrder();
+                                }
+                              },
+                              label: 'FINALIZAR',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -139,12 +171,10 @@ class _AddressField extends GetView<ShoppingCardController> {
         children: [
           SizedBox(
             height: 35,
-            child: Expanded(
-              child: Text(
-                'Endereço de entrega',
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 18),
-              ),
+            child: Text(
+              'Endereço de entrega',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 18),
             ),
           ),
           TextFormField(
@@ -183,12 +213,10 @@ class _CpfField extends GetView<ShoppingCardController> {
         children: [
           SizedBox(
             height: 35,
-            child: Expanded(
-              child: Text(
-                'CPF',
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 18),
-              ),
+            child: Text(
+              'CPF',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 18),
             ),
           ),
           TextFormField(
