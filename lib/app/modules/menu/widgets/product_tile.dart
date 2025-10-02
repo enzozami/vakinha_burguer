@@ -27,7 +27,8 @@ class ProductTile extends StatelessWidget {
                   bottomLeft: Radius.circular(10),
                 ),
                 image: DecorationImage(
-                  image: NetworkImage('http://10.24.24.247:8080/images${product.image}'),
+                  // image: NetworkImage('http://10.24.24.247:8080/images${product.image}'),
+                  image: NetworkImage(product.image),
                   fit: BoxFit.cover,
                 ),
               ),

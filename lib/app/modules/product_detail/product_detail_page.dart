@@ -31,7 +31,9 @@ class ProductDetailPage extends GetView<ProductDetailController> {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(
-                            'http://10.24.24.247:8080/images${controller.product.image}'),
+                          // 'http://10.24.24.247:8080/images${controller.product.image}',
+                          controller.product.image,
+                        ),
                         fit: BoxFit.cover,
                       ),
                     ),
